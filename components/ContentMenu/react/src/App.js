@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './style.css';
 import Detail from './Detail';
 import dummyData from './dummyData';
+import ContextPortal from './ContextPortal';
 
 const App = () => {
 
   const [openIndex, setOpenIndex] = useState(null);
+  const detailRefs = useRef([]);
 
   const togglePopover = index => e => {
     e.preventDefault();
     e.stopPropagation();
-    setOpenIndex(openIndex === index ? null : index);
+    setOpenIndex(e.target.parentElement.open ? null : index);
   };
 
-  const closeAll = (e) => {
-    if (e.target.nodeName !== 'P') setOpenIndex(null);
+  const closeAll = () => {
+    setOpenIndex(null);
   };
 
   useEffect(() => {
@@ -25,18 +27,23 @@ const App = () => {
   }, []);
 
   return (
-    <div className="wrapper">
-      {
-        dummyData.map(({ text, context }, i) =>
+    <>
+      <div className="wrapper">
+        {dummyData.map(({ text, context }, i) => (
           <Detail
             key={`detail${i}`}
+            ref={r => (detailRefs.current[i] = r)}
             text={text}
-            context={context}
-            onToggle={togglePopover(i)}
             open={openIndex === i}
-          />)
-      }
-    </div>
+            onToggle={togglePopover(i)}
+          />
+        ))}
+      </div>
+      <ContextPortal
+        target={detailRefs.current[openIndex]}
+        children={<p>{dummyData[openIndex]?.context}</p>}
+      />
+    </>
   );
 };
 

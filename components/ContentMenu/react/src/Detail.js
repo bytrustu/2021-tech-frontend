@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 
-const Detail = ({ text, context, open, onToggle }) => {
+const Detail = ({ text, open, onToggle }, ref) => {
   return (
-    <details open={open}>
+    <details open={open} ref={ref}>
       <summary onClick={onToggle}>{text}</summary>
-      <p>{context}</p>
     </details>
   );
 };
 
-export default Detail;
+export default forwardRef(Detail);
