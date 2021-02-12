@@ -1,29 +1,35 @@
-import "./style.css";
-import renderList from "./listRenderer";
+import './style.css';
+import renderList from './listRenderer';
 import { debounce } from './util';
 
-const app = document.querySelector("#app");
-const fetchMoreTrigger = document.querySelector("#fetchMore");
+const app = document.querySelector('#app');
+const fetchMoreTrigger = document.querySelector('#fetchMore');
 let page = 0;
 
 const loadMore = async () => {
   const target = page ? fetchMoreTrigger : app;
-  target.classList.add("loading");
+  target.classList.add('loading');
   await renderList(page++);
-  target.classList.remove("loading");
+  target.classList.remove('loading');
 };
 
-const onScroll = (e) => {
-  const {
-    scrollHeight,
-    scrollTop,
-    clientHeight
-  } = e.target.scrollingElement;
+const fetchMoreObserver = new IntersectionObserver(([{ isIntersecting }]) => {
+  if (isIntersecting) loadMore();
+});
+fetchMoreObserver.observe(fetchMoreTrigger);
 
-  if (scrollHeight === scrollTop + clientHeight) {
-    loadMore();
-  }
-};
+// const onScroll = (e) => {
+//   const {
+//     scrollHeight,
+//     scrollTop,
+//     clientHeight
+//   } = e.target.scrollingElement;
+//
+//   if (scrollHeight === scrollTop + clientHeight) {
+//     loadMore();
+//   }
+// };
 
-document.addEventListener("scroll", debounce(onScroll, 100));
+
+// document.addEventListener('scroll', debounce(onScroll, 100));
 loadMore();
