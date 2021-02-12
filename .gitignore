@@ -1,4 +1,4 @@
-.idea
+../../../.idea
 /components/ContentMenu/react/node_modules
 /components/InfiniteScroll/js/.cache
 /components/InfiniteScroll/js/dist
