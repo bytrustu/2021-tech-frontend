@@ -1,5 +1,7 @@
-../../../.idea
-/components/ContentMenu/react/node_modules
-/components/InfiniteScroll/js/.cache
-/components/InfiniteScroll/js/dist
-/components/InfiniteScroll/js/node_modules
+.idea
+components/ContentMenu/react/node_modules
+components/InfiniteScroll/js/.cache
+components/InfiniteScroll/js/dist
+components/InfiniteScroll/js/node_modules
+components/InfiniteScroll/react/node_modules
+components/InfiniteScroll/node_modules
