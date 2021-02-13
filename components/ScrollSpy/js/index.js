@@ -1,35 +1,28 @@
-import { throttle, debounce } from './util';
-
 const navElem = document.querySelector('#nav');
 const navItems = Array.from(navElem.children);
 const contentsElem = document.querySelector('#contents');
 const contentItems = Array.from(contentsElem.children);
 
-let offsetTops = [];
-const getOffsetTops = () => {
-  console.log(`>>>>>> offset Top`);
-  offsetTops = contentItems.map(elem => {
-    const [ofs, clh] = [elem.offsetTop, elem.clientHeight];
-    return [ofs - clh / 2, ofs + clh / 2];
-  });
-};
-getOffsetTops();
+const scrollSpyObserver = new IntersectionObserver(
+  entries => {
+    const { target } = entries.find(entry => entry.isIntersecting) || {};
+    const index = contentItems.indexOf(target);
+    Array.from(navElem.children).forEach((c, i) => {
+      if (i === index) {
+        c.classList.add('on');
+      } else {
+        c.classList.remove('on');
+      }
+    });
+  },
+  {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.5,
+  },
+);
 
-window.addEventListener('scroll', throttle(function(e) {
-  const { scrollTop } = e.target.scrollingElement;
-  const targetIndex = offsetTops.findIndex(([from, to]) => (
-    scrollTop >= from && scrollTop < to
-  ));
-  Array.from(navElem.children).forEach((c, i) => {
-    if (i !== targetIndex) {
-      c.classList.remove('on');
-    } else {
-      c.classList.add('on');
-    }
-  });
-}, 300));
-
-window.addEventListener('resize', debounce(getOffsetTops, 300));
+contentItems.forEach(item => scrollSpyObserver.observe(item));
 
 navElem.addEventListener('click', function(e) {
   const targetElem = e.target;

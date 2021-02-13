@@ -13,7 +13,6 @@ export const throttle = (func, delay) => {
 
 export const debounce = (func, delay) => {
   let timeoutId = null;
-  console.log(`@@@@`, timeoutId);
   return (...args) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(func.bind(null, ...args), delay);
