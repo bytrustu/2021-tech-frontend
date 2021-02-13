@@ -1,3 +1,5 @@
+import { throttle, debounce } from './util';
+
 const navElem = document.querySelector('#nav');
 const navItems = Array.from(navElem.children);
 const contentsElem = document.querySelector('#contents');
@@ -5,6 +7,7 @@ const contentItems = Array.from(contentsElem.children);
 
 let offsetTops = [];
 const getOffsetTops = () => {
+  console.log(`>>>>>> offset Top`);
   offsetTops = contentItems.map(elem => {
     const [ofs, clh] = [elem.offsetTop, elem.clientHeight];
     return [ofs - clh / 2, ofs + clh / 2];
@@ -12,7 +15,7 @@ const getOffsetTops = () => {
 };
 getOffsetTops();
 
-document.addEventListener('scroll', function(e) {
+window.addEventListener('scroll', throttle(function(e) {
   const { scrollTop } = e.target.scrollingElement;
   const targetIndex = offsetTops.findIndex(([from, to]) => (
     scrollTop >= from && scrollTop < to
@@ -24,9 +27,9 @@ document.addEventListener('scroll', function(e) {
       c.classList.add('on');
     }
   });
-});
+}, 300));
 
-document.addEventListener('resize', getOffsetTops);
+window.addEventListener('resize', debounce(getOffsetTops, 300));
 
 navElem.addEventListener('click', function(e) {
   const targetElem = e.target;

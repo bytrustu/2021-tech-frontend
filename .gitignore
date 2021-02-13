@@ -4,4 +4,6 @@ components/InfiniteScroll/js/.cache
 components/InfiniteScroll/js/dist
 components/InfiniteScroll/js/node_modules
 components/InfiniteScroll/react/node_modules
-components/InfiniteScroll/node_modules
+components/ScrollSpy/js/.cache
+components/ScrollSpy/js/dist
+components/ScrollSpy/js/node_modules
